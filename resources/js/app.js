@@ -208,7 +208,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         setTimeout(async function () {
             try {
-                const reply = await getKayiseChatbotResponse(questionText, historySnapshot);
+                const whatsappDisplay = chatbotRoot.dataset.whatsappDisplay || '';
+                const reply = await getKayiseChatbotResponse(questionText, historySnapshot, whatsappDisplay);
                 typingMsg.textContent = reply;
                 messages.scrollTop = messages.scrollHeight;
             } catch (error) {

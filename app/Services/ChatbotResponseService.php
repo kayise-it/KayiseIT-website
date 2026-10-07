@@ -117,7 +117,7 @@ class ChatbotResponseService
                 'email',
                 'get in touch'
             ],
-            'response' => 'You can reach us at +27 87 702 2625 for voice calls, or WhatsApp +27 69 390 7862. Our office address is Suite 2, 2nd Floor, Nelbro Building, 39B Brown Street, Mbombela. You can also open the Contact page and use the map for directions.'
+            'response' => 'You can reach us at +27 87 702 2625 for voice calls, or on WhatsApp. Our office address is Suite 2, 2nd Floor, Nelbro Building, 39B Brown Street, Mbombela. You can also open the Contact page and use the map for directions.'
         ],
         [
             'intent' => 'location',
@@ -333,7 +333,19 @@ class ChatbotResponseService
             return $this->getTrainingSkillsResponse();
         }
 
+        if ($intent === 'contact') {
+            return $this->contactResponse();
+        }
+
         return $fallbackResponse;
+    }
+
+    protected function contactResponse(): string
+    {
+        $display = \App\Models\SiteSetting::displayedWhatsappNumber();
+        $whatsapp = $display ? 'WhatsApp '.$display : 'WhatsApp on our Contact page';
+
+        return 'You can reach us at +27 87 702 2625 for voice calls, or '.$whatsapp.'. Our office address is Suite 2, 2nd Floor, Nelbro Building, 39B Brown Street, Mbombela. You can also open the Contact page and use the map for directions.';
     }
 
     protected function getTrainingSkillsResponse(): string

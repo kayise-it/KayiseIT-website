@@ -131,11 +131,11 @@
             $showChatbotFloating = $showChatbotFloating ?? true;
         @endphp
         @if(!request()->is('dashboard/*') && ($showWhatsappFloating || $showChatbotFloating))
-            <div id="kayise-chatbot" class="kayise-chatbot" aria-live="polite">
+            <div id="kayise-chatbot" class="kayise-chatbot" aria-live="polite" data-whatsapp-display="{{ $whatsappDisplay ?? '' }}">
                 @if($showWhatsappFloating)
                     <a
                         class="kayise-chatbot-whatsapp"
-                        href="https://wa.me/27693907862"
+                        href="{{ route('whatsapp') }}"
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label="Chat with us on WhatsApp"

@@ -33,6 +33,7 @@ class AppServiceProvider extends ServiceProvider
         View::composer('layouts.app', function ($view) {
             $showWhatsappFloating = true;
             $showChatbotFloating = true;
+            $whatsappDisplay = null;
 
             try {
                 if (Schema::hasTable('site_settings')) {
@@ -40,6 +41,7 @@ class AppServiceProvider extends ServiceProvider
                         $settings = SiteSetting::current();
                         $showWhatsappFloating = $settings->show_whatsapp_floating;
                         $showChatbotFloating = $settings->show_chatbot_floating;
+                        $whatsappDisplay = $settings->whatsappDisplay();
                     } catch (\Throwable $e) {
                         // Table exists but row unreadable — keep defaults.
                     }
@@ -51,6 +53,7 @@ class AppServiceProvider extends ServiceProvider
             $view->with([
                 'showWhatsappFloating' => $showWhatsappFloating,
                 'showChatbotFloating' => $showChatbotFloating,
+                'whatsappDisplay' => $whatsappDisplay,
             ]);
         });
     }

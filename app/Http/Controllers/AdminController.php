@@ -1791,11 +1791,19 @@ class AdminController extends Controller
             return redirect()->route('dashboard.settings')->with('success', 'LMIS connection saved.');
         }
 
+        $digits = preg_replace('/\D+/', '', (string) $request->input('whatsapp_e164', '')) ?? '';
+        if ($digits !== '' && (strlen($digits) < 10 || strlen($digits) > 15)) {
+            throw ValidationException::withMessages([
+                'whatsapp_e164' => 'Enter a WhatsApp number with 10 to 15 digits, or leave it blank.',
+            ]);
+        }
+
         $settings->show_whatsapp_floating = $request->boolean('show_whatsapp_floating');
         $settings->show_chatbot_floating = $request->boolean('show_chatbot_floating');
+        $settings->whatsapp_e164 = $digits !== '' ? $digits : null;
         $settings->save();
 
-        return redirect()->route('dashboard.settings')->with('success', 'Frontend floating buttons updated.');
+        return redirect()->route('dashboard.settings')->with('success', 'Website contact settings updated.');
     }
 
     public function testLmisConnection(LmisClient $client)

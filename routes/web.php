@@ -30,6 +30,7 @@ use App\Http\Controllers\PostCategoriesController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Models\Carousel;
+use App\Models\SiteSetting;
 use App\Models\Blog;
 use App\Models\InternshipApplication;
 use App\Models\InternshipProgram;
@@ -73,6 +74,24 @@ Route::get('harambean', function () {
 })->name('harambean');
 
 Route::get('contact', [ContactController::class, 'index'])->name('contact');
+
+Route::get('whatsapp', function () {
+    $digits = null;
+
+    try {
+        if (\Illuminate\Support\Facades\Schema::hasTable('site_settings')) {
+            $digits = SiteSetting::current()->whatsappDigits();
+        }
+    } catch (\Throwable $e) {
+        $digits = null;
+    }
+
+    if ($digits === null) {
+        return redirect()->route('contact', [], 302);
+    }
+
+    return redirect()->away('https://wa.me/'.$digits, 302);
+})->name('whatsapp');
 
 Route::get('services/drone-building-course-south-africa', function () {
     return view('services.seo-landing', [

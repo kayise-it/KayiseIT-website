@@ -36,6 +36,21 @@
                     @csrf
                     <input type="hidden" name="section" value="floating">
 
+                    <div class="py-3 border-b border-gray-100">
+                        <label for="whatsapp_e164" class="font-medium text-gray-900">WhatsApp number</label>
+                        <p class="text-sm text-gray-500 mt-0.5">Banner QR codes point at this permanent URL. Change the number here; the printed QR stays the same. Leave blank to send visitors to the Contact page.</p>
+                        <input type="text" name="whatsapp_e164" id="whatsapp_e164"
+                               value="{{ old('whatsapp_e164', $siteSettings->whatsapp_e164) }}"
+                               placeholder="27693907862"
+                               inputmode="tel"
+                               autocomplete="off"
+                               class="mt-2 block w-full max-w-md rounded-md border-gray-300 shadow-sm focus:border-kb-500 focus:ring-kb-500 text-sm">
+                        <p class="mt-2 text-sm text-gray-600">Public URL: <span class="font-mono text-xs">https://kayiseit.com/whatsapp</span></p>
+                        @error('whatsapp_e164')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
                     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 py-3 border-b border-gray-100">
                         <div>
                             <p class="font-medium text-gray-900">WhatsApp floating button</p>
@@ -63,7 +78,7 @@
                     <div class="pt-2">
                         <button type="submit"
                             class="inline-flex items-center px-4 py-2 bg-kb-100 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-kb-600 focus:outline-none focus:ring-2 focus:ring-kb-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                            Save floating buttons
+                            Save
                         </button>
                     </div>
                 </form>

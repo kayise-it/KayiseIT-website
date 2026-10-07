@@ -113,7 +113,7 @@ export const kayiseChatbotResponses = [
       "get in touch"
     ],
     response:
-      "You can contact KAYISE IT at info@kayiseit.co.za, call +27 87 702 2625, WhatsApp +27 69 390 7862, or use the Contact page form. On the Contact page there is a clickable map you can use to get directions to our office."
+      "You can contact KAYISE IT at info@kayiseit.co.za, call +27 87 702 2625, or use the Contact page form. On the Contact page there is a clickable map you can use to get directions to our office."
   },
   {
     intent: "location",
@@ -308,7 +308,14 @@ async function getLiveOpportunitiesResponse() {
   }
 }
 
-export async function getKayiseChatbotResponse(userMessage = "", conversationHistory = []) {
+function contactReply(whatsappDisplay = "") {
+  const label = String(whatsappDisplay || "").trim();
+  const whatsappBit = label ? `WhatsApp ${label}` : "WhatsApp on the Contact page";
+
+  return `You can contact KAYISE IT at info@kayiseit.co.za, call +27 87 702 2625, ${whatsappBit}, or use the Contact page form. On the Contact page there is a clickable map you can use to get directions to our office.`;
+}
+
+export async function getKayiseChatbotResponse(userMessage = "", conversationHistory = [], whatsappDisplay = "") {
   const normalized = normalizeText(userMessage);
   const inputKeywordSet = new Set(extractKeywords(normalized));
   const historyText = normalizeText(conversationHistory.slice(-6).join(" "));
@@ -337,6 +344,9 @@ export async function getKayiseChatbotResponse(userMessage = "", conversationHis
       if (item.intent === 'opportunities') {
         return await getLiveOpportunitiesResponse();
       }
+      if (item.intent === 'contact') {
+        return contactReply(whatsappDisplay);
+      }
       return item.response;
     }
   }
@@ -360,6 +370,10 @@ export async function getKayiseChatbotResponse(userMessage = "", conversationHis
     const bestItem = kayiseChatbotResponses.find((item) => item.response === bestResponse);
     if (bestItem && bestItem.intent === 'opportunities') {
       return await getLiveOpportunitiesResponse();
+    }
+
+    if (bestItem && bestItem.intent === 'contact') {
+      return contactReply(whatsappDisplay);
     }
 
     return bestResponse;

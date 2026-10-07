@@ -23,7 +23,8 @@
                 <div>
                     <h2 class="mb-2 text-lg font-bold smalltxt flex justify-center">Phone &amp; WhatsApp</h2>
                     <a href="tel:+27877022625" class="text-sm flex justify-center text-black hover:underline">+27 87 702 2625</a>
-                    <a href="https://wa.me/27693907862" target="_blank" rel="noopener noreferrer" class="text-sm flex justify-center text-black hover:underline">WhatsApp +27 69 390 7862</a>
+                    @php $whatsappDisplay = \App\Models\SiteSetting::displayedWhatsappNumber(); @endphp
+                    <a href="{{ route('whatsapp') }}" target="_blank" rel="noopener noreferrer" class="text-sm flex justify-center text-black hover:underline">WhatsApp{{ $whatsappDisplay ? ' '.$whatsappDisplay : '' }}</a>
                 </div>
             </div>
 
